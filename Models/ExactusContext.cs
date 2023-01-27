@@ -72,11 +72,17 @@ public partial class ExactusContext : DbContext
     public virtual DbSet<FafFactura> FafFactura { get; set; }
 
     public virtual DbSet<FafFacturacorrecion> FafFacturacorrecion { get; set; }
-
     public virtual DbSet<FafFacturadetalle> FafFacturadetalle { get; set; }
     public virtual DbSet<GlobalVendedores> GlobalVendedores {get;set;}
     public virtual DbSet<TmpImpresionFafFctura> TmpImpresionFafFcturas {get;set;}
+    public virtual DbSet<TmpImpresionFafFacturaDetalle> TmpImpresionFafFacturaDetalle {get;set;}
     public virtual DbSet<UsuarioSucursal> UsuarioSucursal {get;set;}
+    public virtual DbSet<GlobalSucursales> GlobalSucursales {get;set;}
+    public virtual DbSet<CcfClientes> CcfClientes {get;set;}
+    public virtual DbSet<FafTiposPago> FafTiposPago {get;set;}
+    public virtual DbSet<FafParametrosGenerales> FafParametrosGenerales {get;set;}
+    public virtual DbSet<Articulo> Articulo {get;set;}
+    public virtual DbSet<Tipo_Cambio_Hist> Tipo_Cambio_Hist {get;set;}
     /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -188,11 +194,52 @@ public partial class ExactusContext : DbContext
 
         });
 
+        modelBuilder.Entity<TmpImpresionFafFacturaDetalle>(entity =>
+        {
+            entity.HasKey(e => new {e.CodSucursal,e.Factura, e.CodCliente});
+            entity.ToTable("tmpImpresionfafFACTURADetalle", "fnica");
+        });
+        modelBuilder.Entity<Articulo>(entity =>
+        {
+            entity.HasKey(e => e.ARTICULO).HasName("PK_ARTICULO");
+            entity.ToTable("Articulo","fnica");
+        });
+
+        modelBuilder.Entity<Tipo_Cambio_Hist>(entity =>
+        {
+            entity.HasKey(e => new {e.Tipo_Cambio, e.Fecha, e.Monto});
+            entity.ToTable("Tipo_Cambio_Hist","fnica");
+        });
+
         modelBuilder.Entity<UsuarioSucursal>(entity =>
         {
             entity.HasKey(e => new {e.IdUsuario,e.CodSucursal});
             entity.ToTable("UsuarioSucursal", "fnica");
 
+        });
+
+        modelBuilder.Entity<GlobalSucursales>(entity =>
+        {
+            entity.HasKey(e => e.Codsucursal).HasName("PK_Codsucursal");
+            entity.ToTable("globalSucursales","fnica");
+        });
+
+        modelBuilder.Entity<CcfClientes>(entity =>
+        {
+            entity.HasKey(e => e.CodCliente).HasName("PK_CodCliente");
+            entity.ToTable("CcfClientes","fnica");
+        });
+
+        modelBuilder.Entity<FafTiposPago>(entity => 
+        {
+            entity.HasKey(e => e.TipoPago).HasName("PK_TiposPago");
+            entity.ToTable("fafTiposPago","fnica");
+        });
+
+        modelBuilder.Entity<FafParametrosGenerales>(entity =>
+        {
+            entity.HasKey(e => new {e.Titulo,e.Promocion1}).HasName("PK_ParametrosGenerales");
+            entity.ToTable("fafParametrosGenerales","fnica");
         });
 
         modelBuilder.Entity<FafAnexoGlobalUltimoCorteCcf>(entity =>

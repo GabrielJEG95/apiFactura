@@ -100,7 +100,7 @@ public partial class FafFactura
 
     public decimal? TarifaFleteUsuario { get; set; }
 
-    public decimal? MontoFlete { get; set; }
+    public decimal MontoFlete { get; set; }
 
     public int? IddepartamentoDestino { get; set; }
 

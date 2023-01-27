@@ -57,5 +57,35 @@ namespace apiFactura.Controllers
                 return StatusCode(error.statusCode, error);
             }
         }
+
+        [HttpGet("facturaImprimir")]
+        public IActionResult GetFacturaImprimir([FromQuery] FafFActuraImpresorParam param)
+        {
+            try
+            {
+                var data = _facturaService.ImprimirFactura(param);
+                return  Ok(data);
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode, error);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult PutFacturaImprimir([FromBody]FafFActuraImpresorParam param)
+        {
+            try
+            {
+                _facturaService.establecerFacturaImpresa(param);
+                return Ok(RespuestaModel.ActualizacionExitosa());
+            }
+            catch (System.Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode, error);
+            }
+        }
     }
 }

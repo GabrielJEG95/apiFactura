@@ -51,9 +51,17 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "ESCPOS": {
+              "target": "Package",
+              "version": "[1.2.3, )"
+            },
             "EfCore.SqlServer2008Query": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "Humanizer": {
+              "target": "Package",
+              "version": "[2.14.1, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
@@ -90,6 +98,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.2, )"
+            },
+            "NumberToWords": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
