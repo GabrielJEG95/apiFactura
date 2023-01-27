@@ -35,6 +35,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAnyCorsPolicy", builder =>
 }));
 
 builder.Services.AddTransient<IFacturaService,FacturaService>(); 
+builder.Services.AddTransient<IglobalUsuarioService,globalUsuarioService>();
 
 var app = builder.Build();
 
