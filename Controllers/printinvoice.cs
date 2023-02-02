@@ -18,9 +18,13 @@ namespace apiFactura.Controllers
     public class printinvoice : ControllerBase
     {
         private readonly IFacturaService _facturaService;
-        public printinvoice(IFacturaService facturaService)
+        private readonly IGlobalSucurusalServices _globalSucurusalServices;
+        private readonly IccfClienteService _ccfClienteService;
+        public printinvoice(IFacturaService facturaService, IGlobalSucurusalServices globalSucurusalServices, IccfClienteService ccfClienteService)
         {
             this._facturaService = facturaService;
+            this._globalSucurusalServices = globalSucurusalServices;
+            this._ccfClienteService = ccfClienteService;
         }
 
 
@@ -37,8 +41,10 @@ namespace apiFactura.Controllers
                     float widthPoints = 71 * 72 / 25.4f;
                     Document document = new Document(new Rectangle(widthPoints, 1440f),10f,10f,10f,0f);
                     PdfWriter writer = PdfWriter.GetInstance(document, ms);
+                    
                     //document.SetMargins(30,0,20,0);
                     document.Open();
+                    PdfContentByte canva = writer.DirectContent;
 
                     Paragraph header = new Paragraph("FORMULADORA NICARAGUENSE", FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252, 11, Font.BOLD));
                     header.Alignment = Element.ALIGN_CENTER;
@@ -53,6 +59,10 @@ namespace apiFactura.Controllers
                     document.Add(ruc);
                     foreach (var item in data)
                     {
+                        
+                        var sucursalObj = _globalSucurusalServices.ObtenerGlobalSucursal(item.CodSucursal);
+                        var clienteObj = _ccfClienteService.obtenerCliente(item.CodCliente);
+
                         Paragraph tipoFac = new Paragraph("Tipo de Factura:", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         tipoFac.Alignment = Element.ALIGN_CENTER;
                         tipoFac.Add(item.DescriptoPago);
@@ -68,9 +78,20 @@ namespace apiFactura.Controllers
                         sucursal.Add($"{item.CodSucursal}-{item.Sucursal}");           
                         document.Add(sucursal);
 
+                        
+                        /*Rectangle dir = new Rectangle(36,36,50,36);
+                        ColumnText dirCol = new ColumnText(canva);
+                        dirCol.SetSimpleColumn(dir);
+                        dirCol.AddElement(new Paragraph("Direccion:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)));
+                        dirCol.Go();*/
+
                         Paragraph direccion = new Paragraph("Dirección: ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         direccion.Alignment = Element.ALIGN_LEFT;
                         document.Add(direccion);
+
+                        Paragraph direccionDesc = new Paragraph(sucursalObj.Direccionsucursal, FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL));
+                        direccionDesc.Alignment = Element.ALIGN_LEFT;
+                        document.Add(direccionDesc);
 
                         Paragraph numFact = new Paragraph("No Factura:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         numFact.Alignment = Element.ALIGN_LEFT;
@@ -84,8 +105,11 @@ namespace apiFactura.Controllers
 
                         Paragraph cliente = new Paragraph("Cliente:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         cliente.Alignment = Element.ALIGN_LEFT;
-                        cliente.Add(item.CodCliente);
                         document.Add(cliente);
+
+                        Paragraph clienteName = new Paragraph($"{item.CodCliente} {clienteObj.NombresCliente} {clienteObj.ApellidosCliente}",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL));
+                        clienteName.Alignment = Element.ALIGN_RIGHT;
+                        document.Add(clienteName);
 
                         Paragraph fechaFact = new Paragraph("Fecha Fact:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         fechaFact.Alignment = Element.ALIGN_LEFT;

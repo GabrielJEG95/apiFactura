@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using apiFactura.Models;
 using apiFactura.Models.Dto;
+using apiFactura.Repository;
 using Common.Extensions;
+using Common.Util;
 using static apiFactura.Models.Dto.globalSucursalesDTO;
 
 namespace apiFactura.Services
@@ -12,13 +14,16 @@ namespace apiFactura.Services
     public interface IGlobalSucurusalServices
     {
         List<sucursales> ListSucursal(globalSucursalesDTO Param);
+        sucursales ObtenerGlobalSucursal(string CodSucursal);
     }
     public class GlobalSucurusalServices:IGlobalSucurusalServices
     {
         private readonly ExactusContext _context;
+        private GlobalSucursalesRepository _globalSucursalRepository;
         public GlobalSucurusalServices (ExactusContext context)
         {
-            _context = context;
+            this._context = context;
+            this._globalSucursalRepository = new GlobalSucursalesRepository(context);
         }
 
         public List<sucursales> ListSucursal(globalSucursalesDTO Param)
@@ -38,6 +43,13 @@ namespace apiFactura.Services
                 return null!;
             return data;
 
+        }
+
+        public sucursales ObtenerGlobalSucursal(string CodSucursal)
+        {
+            GlobalSucursales globalSucursales = _globalSucursalRepository.sucursal(CodSucursal);
+            var data = Mapper<GlobalSucursales,sucursales>.Map(globalSucursales);
+            return data;
         }
     }
 }

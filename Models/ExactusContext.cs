@@ -222,7 +222,8 @@ public partial class ExactusContext : DbContext
         modelBuilder.Entity<GlobalSucursales>(entity =>
         {
             entity.HasKey(e => e.Codsucursal).HasName("PK_Codsucursal");
-            entity.ToTable("globalSucursales","fnica");
+            entity.Property(e => e.Codsucursal).HasColumnType("varchar");
+            entity.ToTable("GlobalSucursales","fnica");
         });
 
         modelBuilder.Entity<globalUsuario>(entity =>

@@ -78,7 +78,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAnyCorsPolicy", builder =>
 builder.Services.AddTransient<IFacturaService,FacturaService>(); 
 builder.Services.AddTransient<IglobalUsuarioService,globalUsuarioService>();
 builder.Services.AddTransient<IGlobalSucurusalServices,GlobalSucurusalServices>();
-
+builder.Services.AddTransient<IccfClienteService,ccfClienteService>();
 
 
 var app = builder.Build();

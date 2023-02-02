@@ -14,9 +14,9 @@ namespace apiFactura.Repository
             this._context = context;
         }
 
-        public GlobalSucursales formatoFactura (string CodSucursal)
+        public GlobalSucursales sucursal (string CodSucursal)
         {
-            var result = _context.GlobalSucursales.FirstOrDefault(w => w.Codsucursal.ToUpper() == CodSucursal.ToUpper());
+            GlobalSucursales? result = _context.GlobalSucursales.FirstOrDefault(w => w.Codsucursal.ToUpper() == CodSucursal.ToUpper());
 
             if(result == null)
                 return null!;

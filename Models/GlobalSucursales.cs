@@ -14,7 +14,7 @@ namespace apiFactura.Models
         public DateTime Fecharegistro {get;set;}
         public string Usuario1 {get;set;} = null!;
         public DateTime Fechaupdate {get;set;}
-        public bool Activa {get;set;}
+        public string Activa {get;set;} = null!;
         public string Email {get;set;} = null!;
         public string Passwordemail {get;set;} = null!;
         public DateTime ultimodiacerrado {get;set;}
