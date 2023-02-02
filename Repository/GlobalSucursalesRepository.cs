@@ -22,5 +22,7 @@ namespace apiFactura.Repository
                 return null!;
             return result;
         }
+
+        
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using apiFactura.Models;
 using apiFactura.Models.Dto;
@@ -9,7 +10,10 @@ using Common.Exceptions;
 using Common.Extensions;
 using Common.Paginado;
 using Common.Referencias;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace apiFactura.Controllers
 {

@@ -46,6 +46,15 @@
           }
         }
       },
+      "BouncyCastle/1.8.9": {
+        "type": "package",
+        "compile": {
+          "lib/BouncyCastle.Crypto.dll": {}
+        },
+        "runtime": {
+          "lib/BouncyCastle.Crypto.dll": {}
+        }
+      },
       "EfCore.SqlServer2008Query/6.0.0": {
         "type": "package",
         "dependencies": {
@@ -660,6 +669,54 @@
             "locale": "zh-Hant"
           }
         }
+      },
+      "iTextSharp/5.5.13.3": {
+        "type": "package",
+        "dependencies": {
+          "BouncyCastle": "1.8.9"
+        },
+        "compile": {
+          "lib/itextsharp.dll": {}
+        },
+        "runtime": {
+          "lib/itextsharp.dll": {}
+        }
+      },
+      "JWT/10.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2",
+          "System.Text.Json": "6.0.7"
+        },
+        "compile": {
+          "lib/net6.0/JWT.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/JWT.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/7.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.15.1"
+        },
+        "compile": {
+          "lib/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Microsoft.AspNetCore.OpenApi/7.0.2": {
         "type": "package",
@@ -1283,6 +1340,43 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "Neodynamic.SDK.ThermalLabel/12.0.0": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "1.60.0",
+          "System.Text.Encoding.CodePages": "4.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Neodynamic.SDK.ThermalLabel.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Neodynamic.SDK.ThermalLabel.dll": {}
+        }
+      },
+      "Neodynamic.SDK.ThermalLabel.WebPrinting/12.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Neodynamic.SDK.ThermalLabel": "12.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Neodynamic.SDK.ThermalLabel.WebPrinting.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Neodynamic.SDK.ThermalLabel.WebPrinting.dll": {}
+        }
+      },
+      "Neodynamic.SDK.WebClientPrint/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Text.Encoding.CodePages": "4.6.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Neodynamic.SDK.WebClientPrint.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Neodynamic.SDK.WebClientPrint.dll": {}
+        }
+      },
       "Newtonsoft.Json/13.0.2": {
         "type": "package",
         "compile": {
@@ -1303,6 +1397,33 @@
         },
         "runtime": {
           "lib/NumberToWords.dll": {}
+        }
+      },
+      "SkiaSharp/1.60.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.3/SkiaSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard1.3/SkiaSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/win7-x64/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win7-x64"
+          },
+          "runtimes/win7-x86/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win7-x86"
+          }
         }
       },
       "Swashbuckle.AspNetCore/6.4.0": {
@@ -1706,7 +1827,7 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "compile": {
-          "lib/net6.0/_._": {
+          "lib/net6.0/System.Text.Encoding.CodePages.dll": {
             "related": ".xml"
           }
         },
@@ -1836,6 +1957,19 @@
         "azureicon.png",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "BouncyCastle/1.8.9": {
+      "sha512": "axnBgvdD5n+FnEG6efk/tfKuMFru7R/EoISH9zjh319yb3HD24TEHSAbNN/lTRT2ulOGRxDgOsCjkuk08iwWPg==",
+      "type": "package",
+      "path": "bouncycastle/1.8.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "bouncycastle.1.8.9.nupkg.sha512",
+        "bouncycastle.nuspec",
+        "lib/BouncyCastle.Crypto.dll"
       ]
     },
     "EfCore.SqlServer2008Query/6.0.0": {
@@ -2608,6 +2742,66 @@
         "lib/netstandard1.0/zh-Hant/Humanizer.resources.dll",
         "lib/netstandard2.0/zh-Hant/Humanizer.resources.dll",
         "logo.png"
+      ]
+    },
+    "iTextSharp/5.5.13.3": {
+      "sha512": "vtnMhTEJdZFCkLqaQLjD8aqTBIVKHPrSFuSXnxbLEJlvE/j/l88fvG9wtsejXTmhtErMo0lA9T2LdfdfbwplYw==",
+      "type": "package",
+      "path": "itextsharp/5.5.13.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "gnu-agpl-v3.0.md",
+        "itextsharp.5.5.13.3.nupkg.sha512",
+        "itextsharp.nuspec",
+        "lib/iTextSharp.xml",
+        "lib/itextsharp.dll",
+        "notice.txt"
+      ]
+    },
+    "JWT/10.0.1": {
+      "sha512": "TPElFEnhSQniqgIyZ182vRzAXanssk2ktcHNL/HKiEOJqnKX6k5SWm9k9PyQWSaxU6uy51km8+AiYhCQNMzdgA==",
+      "type": "package",
+      "path": "jwt/10.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "jwt.10.0.1.nupkg.sha512",
+        "jwt.nuspec",
+        "lib/net35/JWT.dll",
+        "lib/net35/JWT.pdb",
+        "lib/net35/JWT.xml",
+        "lib/net40/JWT.dll",
+        "lib/net40/JWT.pdb",
+        "lib/net40/JWT.xml",
+        "lib/net462/JWT.dll",
+        "lib/net462/JWT.pdb",
+        "lib/net462/JWT.xml",
+        "lib/net6.0/JWT.dll",
+        "lib/net6.0/JWT.pdb",
+        "lib/net6.0/JWT.xml",
+        "lib/netstandard1.3/JWT.dll",
+        "lib/netstandard1.3/JWT.pdb",
+        "lib/netstandard1.3/JWT.xml",
+        "lib/netstandard2.0/JWT.dll",
+        "lib/netstandard2.0/JWT.pdb",
+        "lib/netstandard2.0/JWT.xml"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/7.0.2": {
+      "sha512": "sErKh1ZM3Ye1Lib8aWjexf1M5Ne0wptmR8Rr2p/7w1bXyi0kSHnYsVjdEsZGKHE12wNu+g3Zu6TLsKAVEyGYNw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/7.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll",
+        "lib/net7.0/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
+        "microsoft.aspnetcore.authentication.jwtbearer.7.0.2.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
       ]
     },
     "Microsoft.AspNetCore.OpenApi/7.0.2": {
@@ -3742,6 +3936,50 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "Neodynamic.SDK.ThermalLabel/12.0.0": {
+      "sha512": "O5qcADxvnmCxeV0Pfe6/jyzCSLdQ6BNBIqyjzUJPFz/hGxe8CqSPexQMJ3XImipnQJj3siViDITTLqxt0n2Bfw==",
+      "type": "package",
+      "path": "neodynamic.sdk.thermallabel/12.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "EULA-v13.txt",
+        "content/Readme.txt",
+        "lib/netstandard2.0/Neodynamic.SDK.ThermalLabel.dll",
+        "neodynamic.sdk.thermallabel.12.0.0.nupkg.sha512",
+        "neodynamic.sdk.thermallabel.nuspec",
+        "tl.png"
+      ]
+    },
+    "Neodynamic.SDK.ThermalLabel.WebPrinting/12.0.0": {
+      "sha512": "xL+VF+IkzyqbLrj6YeaMQGj1Mk6ZjpD2FWT/GWLJddD2yunWrVyiWxYBciVuqTgiviaNUTidQ8cj0l78i+FQ5g==",
+      "type": "package",
+      "path": "neodynamic.sdk.thermallabel.webprinting/12.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "EULA-v11.txt",
+        "content/Readme.txt",
+        "lib/netstandard2.0/Neodynamic.SDK.ThermalLabel.WebPrinting.dll",
+        "neodynamic.sdk.thermallabel.webprinting.12.0.0.nupkg.sha512",
+        "neodynamic.sdk.thermallabel.webprinting.nuspec",
+        "tlwebprint.png"
+      ]
+    },
+    "Neodynamic.SDK.WebClientPrint/6.0.0": {
+      "sha512": "mNKxkF8dSMT99hCe4sLQWGghzzgdEe409qU9HMQsShGJZczTyP+gbsaW6Inoizp5QuG401w5PllC3k9YAzQMRg==",
+      "type": "package",
+      "path": "neodynamic.sdk.webclientprint/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "EULA-v11.txt",
+        "content/Readme.txt",
+        "lib/netstandard2.0/Neodynamic.SDK.WebClientPrint.dll",
+        "neodynamic.sdk.webclientprint.6.0.0.nupkg.sha512",
+        "neodynamic.sdk.webclientprint.nuspec"
+      ]
+    },
     "Newtonsoft.Json/13.0.2": {
       "sha512": "R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
       "type": "package",
@@ -3782,6 +4020,51 @@
         "lib/NumberToWords.dll",
         "numbertowords.1.0.1.nupkg.sha512",
         "numbertowords.nuspec"
+      ]
+    },
+    "SkiaSharp/1.60.0": {
+      "sha512": "HoSNIZH54rinevEhLUWdeclr+H/QdmOp252+Tt07HTXwQyvRl9eW32ga/X7T56wsR855SKprb0RcnBPRCzlqSA==",
+      "type": "package",
+      "path": "skiasharp/1.60.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net45/SkiaSharp.dll.config",
+        "build/net45/SkiaSharp.targets",
+        "lib/MonoAndroid/SkiaSharp.dll",
+        "lib/MonoAndroid/SkiaSharp.xml",
+        "lib/XamarinMac/SkiaSharp.dll",
+        "lib/XamarinMac/SkiaSharp.xml",
+        "lib/XamariniOS/SkiaSharp.dll",
+        "lib/XamariniOS/SkiaSharp.xml",
+        "lib/XamarintvOS/SkiaSharp.dll",
+        "lib/XamarintvOS/SkiaSharp.xml",
+        "lib/XamarinwatchOS/SkiaSharp.dll",
+        "lib/XamarinwatchOS/SkiaSharp.xml",
+        "lib/net45/SkiaSharp.dll",
+        "lib/net45/SkiaSharp.dll.config",
+        "lib/net45/SkiaSharp.xml",
+        "lib/netstandard1.3/SkiaSharp.dll",
+        "lib/netstandard1.3/SkiaSharp.xml",
+        "lib/portable-net45+win8+wpa81+wp8/SkiaSharp.dll",
+        "lib/portable-net45+win8+wpa81+wp8/SkiaSharp.xml",
+        "lib/uap10.0/SkiaSharp.dll",
+        "lib/uap10.0/SkiaSharp.xml",
+        "runtimes/osx/native/libSkiaSharp.dylib",
+        "runtimes/win10-arm/nativeassets/uap10.0/libEGL.dll",
+        "runtimes/win10-arm/nativeassets/uap10.0/libGLESv2.dll",
+        "runtimes/win10-arm/nativeassets/uap10.0/libSkiaSharp.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/libEGL.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/libGLESv2.dll",
+        "runtimes/win10-x64/nativeassets/uap10.0/libSkiaSharp.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/libEGL.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/libGLESv2.dll",
+        "runtimes/win10-x86/nativeassets/uap10.0/libSkiaSharp.dll",
+        "runtimes/win7-x64/native/libSkiaSharp.dll",
+        "runtimes/win7-x86/native/libSkiaSharp.dll",
+        "skiasharp.1.60.0.nupkg.sha512",
+        "skiasharp.nuspec",
+        "xamarin.interactive/SkiaSharp.Workbooks.dll"
       ]
     },
     "Swashbuckle.AspNetCore/6.4.0": {
@@ -4817,6 +5100,8 @@
       "ESCPOS >= 1.2.3",
       "EfCore.SqlServer2008Query >= 6.0.0",
       "Humanizer >= 2.14.1",
+      "JWT >= 10.0.1",
+      "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.2",
       "Microsoft.AspNetCore.OpenApi >= 7.0.2",
       "Microsoft.Data.SqlClient >= 5.1.0",
       "Microsoft.EntityFrameworkCore >= 7.0.2",
@@ -4824,10 +5109,14 @@
       "Microsoft.EntityFrameworkCore.Relational >= 7.0.2",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.2",
+      "Neodynamic.SDK.ThermalLabel >= 12.0.0",
+      "Neodynamic.SDK.ThermalLabel.WebPrinting >= 12.0.0",
+      "Neodynamic.SDK.WebClientPrint >= 6.0.0",
       "Newtonsoft.Json >= 13.0.2",
       "NumberToWords >= 1.0.1",
       "Swashbuckle.AspNetCore >= 6.4.0",
-      "System.Linq.Dynamic.Core >= 1.2.24"
+      "System.Linq.Dynamic.Core >= 1.2.24",
+      "iTextSharp >= 5.5.13.3"
     ]
   },
   "packageFolders": {
@@ -4896,6 +5185,14 @@
             "target": "Package",
             "version": "[2.14.1, )"
           },
+          "JWT": {
+            "target": "Package",
+            "version": "[10.0.1, )"
+          },
+          "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "target": "Package",
+            "version": "[7.0.2, )"
+          },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[7.0.2, )"
@@ -4928,6 +5225,18 @@
             "target": "Package",
             "version": "[7.0.2, )"
           },
+          "Neodynamic.SDK.ThermalLabel": {
+            "target": "Package",
+            "version": "[12.0.0, )"
+          },
+          "Neodynamic.SDK.ThermalLabel.WebPrinting": {
+            "target": "Package",
+            "version": "[12.0.0, )"
+          },
+          "Neodynamic.SDK.WebClientPrint": {
+            "target": "Package",
+            "version": "[6.0.0, )"
+          },
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.2, )"
@@ -4943,6 +5252,10 @@
           "System.Linq.Dynamic.Core": {
             "target": "Package",
             "version": "[1.2.24, )"
+          },
+          "iTextSharp": {
+            "target": "Package",
+            "version": "[5.5.13.3, )"
           }
         },
         "imports": [
@@ -4969,6 +5282,26 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"BouncyCastle 1.8.9\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net7.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "libraryId": "BouncyCastle",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"iTextSharp 5.5.13.3\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net7.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "libraryId": "iTextSharp",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

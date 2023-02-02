@@ -25,7 +25,7 @@ namespace apiFactura.Controllers
         {
             try
             {
-                var data = _globalUsuarioService.loginUsuario(param);
+                var data = _globalUsuarioService.AuthenticationLogin(param);
                 return Ok(data);
             }
             catch (System.Exception ex)

@@ -21,7 +21,8 @@ namespace apiFactura.Services
     {
         PaginaCollection<ListFactura> ListarFacturas (facturaDTO param);
         dynamic ListarFacturasImprimir (FacturaImprimirDTO param);
-        dynamic ImprimirFactura(FafFActuraImpresorParam param);
+        List<headerFacturaImprimir> ImprimirFactura(FafFActuraImpresorParam param);
+        List<detailFacturaImprimir> ImprimirDetalleFactura(FafFActuraImpresorParam param);
         Task establecerFacturaImpresa (FafFActuraImpresorParam param);
     }
 
@@ -108,9 +109,15 @@ namespace apiFactura.Services
             return result;
         }
 
-        public dynamic ImprimirFactura(FafFActuraImpresorParam param)
+        public List<headerFacturaImprimir> ImprimirFactura(FafFActuraImpresorParam param)
         {
             var result = param.impresa == 1?FafImprimirFactura(param):tmpImprimirFactura(param);
+            return result;
+        }
+
+        public List<detailFacturaImprimir> ImprimirDetalleFactura(FafFActuraImpresorParam param)
+        {
+            var result = param.impresa == 1?tmpDetalleImprimir(param):fafDetalleImprimir(param);
             return result;
         }
         private List<headerFacturaImprimir> FafImprimirFactura(FafFActuraImpresorParam param)
@@ -166,6 +173,7 @@ namespace apiFactura.Services
 
             return result;
         }
+
         private List<headerFacturaImprimir> tmpImprimirFactura(FafFActuraImpresorParam param)
         {
             var result = _context.TmpImpresionFafFcturas.Where(w => (param.CodSucursal.IsNullOrEmpty() || w.Codsucursal.ToUpper() == param.CodSucursal.ToUpper())
@@ -219,6 +227,56 @@ namespace apiFactura.Services
             }).ToList();
 
             return result;
+        }
+
+        private List<detailFacturaImprimir> fafDetalleImprimir(FafFActuraImpresorParam param)
+        {
+            var data = _context.FafFacturadetalle
+                .Where(w => w.Factura == param.numeroFactura && w.Codsucursal.ToUpper() == param.CodSucursal.ToUpper())
+                .Select(se => new detailFacturaImprimir
+                {
+                    Cantidad = se.Cantidad,
+                    PrecioUnitario=se.Preciounitario,
+                    Subtotal=se.Subtotal,
+                    Descuento=se.Descuento,
+                    Iva=se.Iva,
+                    Total=se.Total,
+                    CodCultivo=se.Codcultivo,
+                    Numeroserie=se.Numeroserie,
+                    Articulo=se.Articulo,
+                    Combo=se.Combo,
+                    Descripcion = _context.Articulo.FirstOrDefault(w => w.ARTICULO.ToUpper()==se.Articulo.ToUpper()).Descripcion,
+                    Factor_Empaque=_context.Articulo.FirstOrDefault(w => w.ARTICULO.ToUpper()==se.Articulo.ToUpper()).Factor_Empaque,
+                    Unidad_Almacen=_context.Articulo.FirstOrDefault(w => w.ARTICULO.ToUpper() == se.Articulo.ToUpper()).Unidad_Almacen,
+                    Lote= se.Lote 
+                }).ToList();
+
+                return data;
+        }
+
+        private List<detailFacturaImprimir> tmpDetalleImprimir(FafFActuraImpresorParam param)
+        {
+            var data = _context.TmpImpresionFafFacturaDetalle
+                .Where(w => w.Factura == param.numeroFactura && w.CodSucursal.ToUpper() == param.CodSucursal.ToUpper())
+                .Select(se => new detailFacturaImprimir
+                {
+                    Cantidad = se.Cantidad,
+                    PrecioUnitario=se.PrecioUnitario,
+                    Subtotal=se.Subtotal,
+                    Descuento=se.Descuento,
+                    Iva=se.Iva,
+                    Total=se.Total,
+                    CodCultivo=se.CodCultivo,
+                    Numeroserie=se.Numeroserie,
+                    Articulo=se.Articulo,
+                    Combo=se.Combo,
+                    Descripcion = _context.Articulo.FirstOrDefault(w => w.ARTICULO.ToUpper()==se.Articulo.ToUpper()).Descripcion,
+                    Factor_Empaque=_context.Articulo.FirstOrDefault(w => w.ARTICULO.ToUpper()==se.Articulo.ToUpper()).Factor_Empaque,
+                    Unidad_Almacen=_context.Articulo.FirstOrDefault(w => w.ARTICULO.ToUpper() == se.Articulo.ToUpper()).Unidad_Almacen,
+                    Lote= se.Lote 
+                }).ToList();
+
+                return data;
         }
         public async Task establecerFacturaImpresa (FafFActuraImpresorParam param)
         { 
