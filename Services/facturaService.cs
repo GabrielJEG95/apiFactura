@@ -23,7 +23,7 @@ namespace apiFactura.Services
         dynamic ListarFacturasImprimir (FacturaImprimirDTO param);
         List<headerFacturaImprimir> ImprimirFactura(FafFActuraImpresorParam param);
         List<detailFacturaImprimir> ImprimirDetalleFactura(FafFActuraImpresorParam param);
-        Task establecerFacturaImpresa (FafFActuraImpresorParam param);
+        void establecerFacturaImpresa (FafFActuraImpresorParam param, UpdateFactura obj);
     }
 
     public class FacturaService:IFacturaService
@@ -83,6 +83,8 @@ namespace apiFactura.Services
                 Codsucursal=s.Codsucursal,
                 Sucursal=_context.GlobalSucursales.FirstOrDefault(w => w.Codsucursal.ToUpper() == s.Codsucursal.ToUpper()).Sucursal,
                 CodCliente=s.CodCliente,
+                Subtotal=s.Subtotal,
+                TotalFactura=s.TotalFactura,
                 Cliente = _context.CcfClientes.Where(w => w.CodCliente.ToUpper() == s.CodCliente.ToUpper()).Select(s => $"{s.NombresCliente} {s.ApellidosCliente}").FirstOrDefault()
             }).Paginar(param.pagina,param.registroPorPagina);
 
@@ -103,6 +105,8 @@ namespace apiFactura.Services
                 Codsucursal=s.Codsucursal,
                 Sucursal= _context.GlobalSucursales.FirstOrDefault(w => w.Codsucursal.ToUpper() == s.Codsucursal.ToUpper()).Sucursal,
                 CodCliente=s.Codcliente,
+                Subtotal=s.Subtotal,
+                TotalFactura=s.Totalfactura,
                 Cliente = _context.CcfClientes.Where(w => w.CodCliente.ToUpper() == s.Codcliente.ToUpper()).Select(s => $"{s.NombresCliente} {s.ApellidosCliente}").FirstOrDefault()
             }).Paginar(param.pagina,param.registroPorPagina);
 
@@ -117,7 +121,7 @@ namespace apiFactura.Services
 
         public List<detailFacturaImprimir> ImprimirDetalleFactura(FafFActuraImpresorParam param)
         {
-            var result = param.impresa == 1?tmpDetalleImprimir(param):fafDetalleImprimir(param);
+            var result = param.impresa == 1?fafDetalleImprimir(param):tmpDetalleImprimir(param);
             return result;
         }
         private List<headerFacturaImprimir> FafImprimirFactura(FafFActuraImpresorParam param)
@@ -150,7 +154,7 @@ namespace apiFactura.Services
                 Expr1=$"{_numLetra.NumeroALetras(s.Totalfactura)} con {s.Totalfactura % 1}",
                 MontoLetrasDolar=$"{_numLetra.NumeroALetras((s.Totalfactura+s.MontoFlete)/s.Tipocambio)} con {((s.Totalfactura+s.MontoFlete)/s.Tipocambio) % 1}",
                 detailFacturaImprimirs=_context.FafFacturadetalle
-                .Where(w => w.Factura == s.Factura && w.Codsucursal.ToUpper() == s.Codsucursal.ToUpper())
+                .Where(w => w.Factura == s.Factura && w.Codsucursal.ToUpper() == param.CodSucursal.ToUpper())
                 .Select(se => new detailFacturaImprimir
                 {
                     Cantidad = se.Cantidad,
@@ -278,41 +282,42 @@ namespace apiFactura.Services
 
                 return data;
         }
-        public async Task establecerFacturaImpresa (FafFActuraImpresorParam param)
+        public void establecerFacturaImpresa (FafFActuraImpresorParam param, UpdateFactura obj)
         { 
             bool existe = _facturaRepository.validaExisteFacturaTemp(param.CodSucursal, param.numeroFactura);
 
             if(!existe)
                 throw new HttpStatusException(HttpStatusCode.NotFound, "La factura solicitada no existe");
 
-            await updateFacturaImpresa(param.CodSucursal,param.numeroFactura);
-            await eliminarTmpFactura(param.CodSucursal,param.numeroFactura);
-            await eliminarTempFacturaDetalle(param.CodSucursal,param.numeroFactura);
+             updateFacturaImpresa(param, obj);
+             eliminarTmpFactura(param.CodSucursal,param.numeroFactura);
+             eliminarTempFacturaDetalle(param.CodSucursal,param.numeroFactura);
 
         }
 
-        private async Task updateFacturaImpresa(string CodSucursal, string numeroFactura)
+        private void updateFacturaImpresa(FafFActuraImpresorParam param, UpdateFactura obj)
         {
-            FafFactura factura = _facturaRepository.obtenerFactura(CodSucursal,numeroFactura);
+            FafFactura factura = _facturaRepository.obtenerFactura(param.CodSucursal,param.numeroFactura);
+            factura = FacturaUpdate.Map(factura,obj);
 
             _context.FafFactura.Update(factura);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        private async Task eliminarTmpFactura(string Codsucursal, string numeroFactura)
+        private void eliminarTmpFactura(string Codsucursal, string numeroFactura)
         {
             TmpImpresionFafFctura tmpFactura = _facturaRepository.obtenerTempFactura(Codsucursal,numeroFactura);
 
             _context.TmpImpresionFafFcturas.Remove(tmpFactura);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        private async Task eliminarTempFacturaDetalle(string Codsucursal, string numeroFactura)
+        private void eliminarTempFacturaDetalle(string Codsucursal, string numeroFactura)
         {
             var tmpDetalle = _facturaRepository.obtenerTempFacturaDetalle(Codsucursal,numeroFactura);
 
             _context.TmpImpresionFafFacturaDetalle.RemoveRange(tmpDetalle);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
         }
         

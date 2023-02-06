@@ -203,7 +203,7 @@ public partial class ExactusContext : DbContext
         modelBuilder.Entity<Articulo>(entity =>
         {
             entity.HasKey(e => e.ARTICULO).HasName("PK_ARTICULO");
-            entity.ToTable("Articulo","fnica");
+            entity.ToTable("ARTICULO","fnica");
         });
 
         modelBuilder.Entity<Tipo_Cambio_Hist>(entity =>

@@ -79,6 +79,9 @@ builder.Services.AddTransient<IFacturaService,FacturaService>();
 builder.Services.AddTransient<IglobalUsuarioService,globalUsuarioService>();
 builder.Services.AddTransient<IGlobalSucurusalServices,GlobalSucurusalServices>();
 builder.Services.AddTransient<IccfClienteService,ccfClienteService>();
+builder.Services.AddTransient<IglobalVendedoreService,globalVendedoreService>();
+builder.Services.AddTransient<IArticuloService,ArticuloService>();
+builder.Services.AddTransient<InumeroLetraService,numeroLetraService>();
 
 
 var app = builder.Build();

@@ -55,30 +55,30 @@ namespace apiFactura.Models.Dto
     
     public class headerFacturaImprimir
     {
-        public string CodSucursal {get;set;} = null!;
-        public string Sucursal {get;set;} = null!;
-        public string Tipo {get;set;} = null!;
-        public string TipoFormato {get;set;} = null!;
-        public string Factura {get;set;} = null!;
+        public string? CodSucursal {get;set;} = null!;
+        public string? Sucursal {get;set;} = null!;
+        public string? Tipo {get;set;} = null!;
+        public string? TipoFormato {get;set;} = null!;
+        public string? Factura {get;set;} = null!;
         public DateTime FechaFactura {get;set;}
-        public string CodCliente {get;set;} = null!;
-        public string Cliente {get;set;} = null!;
+        public string? CodCliente {get;set;} = null!;
+        public string? Cliente {get;set;} = null!;
         public DateTime FechaVencimiento {get;set;}
-        public string Codvendedor {get;set;} = null!;
-        public string NombreVendedor {get;set;} = null!;
-        public string Remision {get;set;} = null!;
-        public string TipoPago {get;set;} = null!;
-        public string DescriptoPago {get;set;} = null!;
+        public string? Codvendedor {get;set;} = null!;
+        public string? NombreVendedor {get;set;} = null!;
+        public string? Remision {get;set;} = null!;
+        public string? TipoPago {get;set;} = null!;
+        public string? DescriptoPago {get;set;} = null!;
         public decimal Subtotal {get;set;}
         public decimal Descuento {get;set;}
         public decimal Iva {get;set;}
         public decimal TotalFactura {get;set;}
         public decimal TipoCambio {get;set;}
-        public string Expr1 {get;set;} = null!;
-        public string NumAutorizadoDgi {get;set;} = null!;
-        public string NombreCliente {get;set;} = null!;
+        public string? Expr1 {get;set;} = null!;
+        public string? NumAutorizadoDgi {get;set;} = null!;
+        public string? NombreCliente {get;set;} = null!;
         public bool AllowEditName {get;set;}
-        public string MontoLetrasDolar {get;set;} = null!;
+        public string? MontoLetrasDolar {get;set;} = null!;
         public decimal TipoCambioParalelo {get;set;}
         public decimal MontoFlete {get;set;}
         public List<detailFacturaImprimir>  detailFacturaImprimirs{get;set;}=new List<detailFacturaImprimir>();
@@ -94,13 +94,13 @@ namespace apiFactura.Models.Dto
         public decimal Descuento {get;set;}
         public decimal Iva {get;set;}
         public decimal Total {get;set;}
-        public string CodCultivo {get;set;} = null!;
-        public string Numeroserie {get;set;} = null!;
-        public string Articulo {get;set;} = null!;
-        public string Combo {get;set;} = null!;
+        public string? CodCultivo {get;set;} = null!;
+        public string? Numeroserie {get;set;} = null!;
+        public string? Articulo {get;set;} = null!;
+        public string? Combo {get;set;} = null!;
         public string? Descripcion {get;set;} = null!;
         public string? Unidad_Almacen {get;set;} = null!;
-        public decimal Factor_Empaque {get;set;}
-        public string Lote {get;set;} = null!;
+        public decimal? Factor_Empaque {get;set;}
+        public string? Lote {get;set;} = null!;
     }
 }

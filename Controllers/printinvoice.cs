@@ -10,6 +10,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using apiFactura.Models;
 using iTextSharp.text.pdf.draw;
+using System.Globalization;
 
 namespace apiFactura.Controllers
 {
@@ -20,11 +21,18 @@ namespace apiFactura.Controllers
         private readonly IFacturaService _facturaService;
         private readonly IGlobalSucurusalServices _globalSucurusalServices;
         private readonly IccfClienteService _ccfClienteService;
-        public printinvoice(IFacturaService facturaService, IGlobalSucurusalServices globalSucurusalServices, IccfClienteService ccfClienteService)
+        private readonly IglobalVendedoreService _globalVendedorService;
+        private readonly IArticuloService _articuloService;
+        private readonly InumeroLetraService _numeroLetraService;
+        public printinvoice(IFacturaService facturaService, IGlobalSucurusalServices globalSucurusalServices, IccfClienteService ccfClienteService,
+            IglobalVendedoreService globalVendedorService, IArticuloService articuloService, InumeroLetraService numeroLetraService)
         {
             this._facturaService = facturaService;
             this._globalSucurusalServices = globalSucurusalServices;
             this._ccfClienteService = ccfClienteService;
+            this._globalVendedorService = globalVendedorService;
+            this._articuloService = articuloService;
+            this._numeroLetraService = numeroLetraService;
         }
 
 
@@ -62,10 +70,12 @@ namespace apiFactura.Controllers
                         
                         var sucursalObj = _globalSucurusalServices.ObtenerGlobalSucursal(item.CodSucursal);
                         var clienteObj = _ccfClienteService.obtenerCliente(item.CodCliente);
+                        var vendedorObj = _globalVendedorService.obtenerVendedor(item.Codvendedor);
+                        string tipo = "";
 
                         Paragraph tipoFac = new Paragraph("Tipo de Factura:", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         tipoFac.Alignment = Element.ALIGN_CENTER;
-                        tipoFac.Add(item.DescriptoPago);
+                        tipoFac.Add(tipo=item.Tipo=="1"?"CONTADO":"CREDITO");
                         document.Add(tipoFac);
 
                         Paragraph tipoCambio = new Paragraph("(T/C= ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
@@ -100,8 +110,11 @@ namespace apiFactura.Controllers
 
                         Paragraph vendedor = new Paragraph("Vendedor:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         vendedor.Alignment = Element.ALIGN_LEFT;
-                        vendedor.Add(item.Codvendedor);
                         document.Add(vendedor);
+
+                        Paragraph vendedorName = new Paragraph($"{item.Codvendedor} {vendedorObj.NombresVendedor} {vendedorObj.ApellidosVendedor}",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL));
+                        vendedorName.Alignment = Element.ALIGN_CENTER;
+                        document.Add(vendedorName);
 
                         Paragraph cliente = new Paragraph("Cliente:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         cliente.Alignment = Element.ALIGN_LEFT;
@@ -113,8 +126,12 @@ namespace apiFactura.Controllers
 
                         Paragraph fechaFact = new Paragraph("Fecha Fact:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         fechaFact.Alignment = Element.ALIGN_LEFT;
-                        fechaFact.Add(item.FechaFactura.ToString("yyyy-MM-dd"));
                         document.Add(fechaFact);
+
+                        // $"{item.FechaFactura.ToString("m",CultureInfo.GetCultureInfo("es-NI"))} de {item.FechaFactura.ToString("yyyy")}"
+                        Paragraph fecha = new Paragraph($"{item.FechaFactura.ToString("m",CultureInfo.GetCultureInfo("es-NI"))} de {item.FechaFactura.ToString("yyyy")}",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL));
+                        fecha.Alignment = Element.ALIGN_CENTER;
+                        document.Add(fecha);
 
                         Paragraph venceEL = new Paragraph("Vence el:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         venceEL.Alignment = Element.ALIGN_LEFT;
@@ -149,13 +166,15 @@ namespace apiFactura.Controllers
                     string fleteMonto = "";
                     DateTime fechaImp = DateTime.Now;
 
-                    float[] widths = new float[] { 25, 25, 25 ,25, 25 };
+                    float[] widths = new float[] { 33, 25, 25 ,25, 25 };
                     table.SetWidths(widths);
                     
                     foreach (detailFacturaImprimir item in detalle)
                     {
+                        var articuloObj = _articuloService.obtenerArticulo(item.Articulo);
+
                         iva = item.Iva == 0? "0.00":item.Iva.ToString("#.##");
-                        table.AddCell(new PdfPCell(new Phrase(item.Articulo,FontFactory.GetFont(FontFactory.HELVETICA,7,Font.NORMAL))){Border = 0});
+                        table.AddCell(new PdfPCell(new Phrase($"{item.Articulo}-{articuloObj.Descripcion}",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.NORMAL))){Border = 0});
                         table.AddCell(new PdfPCell(new Phrase($"{item.Cantidad.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.NORMAL))){Border = 0});
                         table.AddCell(new PdfPCell(new Phrase($"C$ {item.PrecioUnitario.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.NORMAL))){Border = 0});
                         table.AddCell(new PdfPCell(new Phrase($"C$ {iva}",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD))){Border = 0});
@@ -169,12 +188,13 @@ namespace apiFactura.Controllers
 
                     foreach (var item in data)
                     {
-                        iva = item.Iva == 0? "0.00":item.Iva.ToString("#.##");
-                        fleteMonto = item.MontoFlete == 0? "0.00":item.MontoFlete.ToString("#.##");
+                        iva = item.Iva == 0? "0.00":item.Iva.ToString("N",new CultureInfo("es-NI"));
+                        fleteMonto = item.MontoFlete == 0? "0.00":item.MontoFlete.ToString("N",new CultureInfo("es-NI"));
+                        string numero = _numeroLetraService.numeroLetra(item.TotalFactura);
 
                         Paragraph subT = new Paragraph("SubTotal:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         subT.Alignment = Element.ALIGN_RIGHT;
-                        subT.Add(item.Subtotal.ToString("#.##"));
+                        subT.Add($"C${item.Subtotal.ToString("N",new CultureInfo("es-NI"))}");
                         document.Add(subT);
 
                         Paragraph impuesto = new Paragraph("IVA:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
@@ -189,14 +209,26 @@ namespace apiFactura.Controllers
 
                         Paragraph total = new Paragraph("TOTAL:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
                         total.Alignment = Element.ALIGN_RIGHT;
-                        total.Add(item.TotalFactura.ToString("#.##"));
+                        total.Add($"C$ {item.TotalFactura.ToString("N", new CultureInfo("es-NI"))}");
                         document.Add(total);
+
+                        Paragraph espacio = new Paragraph(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
+                        espacio.Alignment = Element.ALIGN_LEFT;
+                        document.Add(espacio);
+
+                        Paragraph totalLetras = new Paragraph($"{numero} con {item.TotalFactura % 1}", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
+                        totalLetras.Alignment = Element.ALIGN_LEFT;
+                        document.Add(totalLetras);
                     }
+
+                    Paragraph IR = new Paragraph("Somos sujetos del 2% de IR", FontFactory.GetFont(FontFactory.HELVETICA, 7, Font.BOLD));
+                    IR.Alignment = Element.ALIGN_LEFT;
+                    document.Add(IR);
 
                     Paragraph saltoDeLinea = new Paragraph("                                                                                                                                                                                                                                                                                                                                                                                   ");
                     document.Add(saltoDeLinea);
 
-                    Paragraph autorizado = new Paragraph("AUT-DGI:ASFC 04/0097/08/2015/7", FontFactory.GetFont(FontFactory.HELVETICA, 7, Font.BOLD));
+                    Paragraph autorizado = new Paragraph("AUT-DGI:ASFC 04/0097/08/2015/7", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
                     autorizado.Alignment = Element.ALIGN_CENTER;
                     document.Add(autorizado);
 

@@ -8,7 +8,7 @@ namespace apiFactura.Models
     public class Articulo
     {
         public string ARTICULO {get;set;} = null!;
-        public string Plantilla_Serie {get;set;} = null!;
+        public string? Plantilla_Serie {get;set;} = null!;
         public string Descripcion {get;set;} = null!;
         public string Clasificacion_1 {get;set;} = null!;
         public string Clasificacion_2 {get;set;} = null!;

@@ -50,4 +50,19 @@ namespace apiFactura.Models.Dto
             public DateTime Fechafactura {get;set;}
 
         }
+
+    public class UpdateFactura
+    {
+        public short Impresa {get;set;}
+    }
+
+    public partial class FacturaUpdate
+    {
+        public static FafFactura Map(FafFactura original, UpdateFactura actualizacion)
+        {
+            original.Impresa = actualizacion.Impresa;
+
+            return original;
+        }
+    }
 }

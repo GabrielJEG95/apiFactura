@@ -78,11 +78,11 @@ namespace apiFactura.Controllers
         }
 
         [HttpPut]
-        public IActionResult PutFacturaImprimir([FromBody]FafFActuraImpresorParam param)
+        public IActionResult PutFacturaImprimir([FromQuery]FafFActuraImpresorParam param,[FromBody] UpdateFactura obj)
         {
             try
             {
-                _facturaService.establecerFacturaImpresa(param);
+                _facturaService.establecerFacturaImpresa(param,obj);
                 return Ok(RespuestaModel.ActualizacionExitosa());
             }
             catch (System.Exception ex)

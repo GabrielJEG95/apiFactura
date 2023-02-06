@@ -5,24 +5,24 @@ namespace apiFactura.Models;
 
 public partial class FafFacturadetalle
 {
-    public string Codsucursal { get; set; } = null!;
+    public string? Codsucursal { get; set; } = null!;
 
-    public string Tipo { get; set; } = null!;
+    public string? Tipo { get; set; } = null!;
 
-    public string Tipoformato { get; set; } = null!;
+    public string? Tipoformato { get; set; } = null!;
 
-    public string Factura { get; set; } = null!;
+    public string? Factura { get; set; } = null!;
 
     /// <summary>
     /// anteriormente codproducto en siscobro
     /// </summary>
-    public string Articulo { get; set; } = null!;
+    public string? Articulo { get; set; } = null!;
 
     public DateTime Fechafactura { get; set; }
 
-    public string Codcliente { get; set; } = null!;
+    public string? Codcliente { get; set; } = null!;
 
-    public string Autorizacion { get; set; } = null!;
+    public string? Autorizacion { get; set; } = null!;
 
     public decimal Cantidad { get; set; }
 
@@ -46,7 +46,7 @@ public partial class FafFacturadetalle
 
     public decimal Totaldolar { get; set; }
 
-    public string Codcultivo { get; set; } = null!;
+    public string? Codcultivo { get; set; } = null!;
 
     public string? Numeroserie { get; set; }
 
@@ -54,13 +54,13 @@ public partial class FafFacturadetalle
 
     public decimal Costodolar { get; set; }
 
-    public short Exonerada { get; set; }
+    public short? Exonerada { get; set; }
 
     public int? Idnegociacion { get; set; }
 
     public decimal? PrecioDolarLista { get; set; }
 
-    public string Lote { get; set; } = null!;
+    public string? Lote { get; set; } = null!;
 
     public string? Combo { get; set; }
 
