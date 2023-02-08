@@ -21,5 +21,10 @@ namespace apiFactura.Models.Dto
             public string sucursal {get;set;}=null!;
             public string Direccionsucursal {get;set;}=null!;
         }
+
+        public class jwt 
+        {
+            public string token {get;set;} = null!;
+        }
     }
 }

@@ -83,59 +83,104 @@ namespace apiFactura.Controllers
                         tipoCambio.Add($"{item.TipoCambio.ToString("#.##")})");
                         document.Add(tipoCambio);
 
-                        Paragraph sucursal = new Paragraph("Sucursal: ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        sucursal.Alignment = Element.ALIGN_LEFT;         
-                        sucursal.Add($"{item.CodSucursal}-{item.Sucursal}");           
-                        document.Add(sucursal);
-
                         
-                        /*Rectangle dir = new Rectangle(36,36,50,36);
-                        ColumnText dirCol = new ColumnText(canva);
-                        dirCol.SetSimpleColumn(dir);
-                        dirCol.AddElement(new Paragraph("Direccion:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)));
-                        dirCol.Go();*/
+                        PdfPTable tableSuc = new PdfPTable(2);
+                        tableSuc.WidthPercentage = 100;
+                        tableSuc.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableSuc.DefaultCell.BorderWidth = 0;
 
-                        Paragraph direccion = new Paragraph("Dirección: ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        direccion.Alignment = Element.ALIGN_LEFT;
-                        document.Add(direccion);
+                        tableSuc.AddCell(new PdfPCell(new Phrase(new Phrase("Sucursal:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableSuc.AddCell(new Phrase(new Phrase($"{item.CodSucursal}-{item.Sucursal}",FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableSuc.AddCell("");
+                        tableSuc.AddCell("");
+                        float[] widthsSuc = new float[] {30,70};
+                        tableSuc.SetWidths(widthsSuc);
 
-                        Paragraph direccionDesc = new Paragraph(sucursalObj.Direccionsucursal, FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL));
-                        direccionDesc.Alignment = Element.ALIGN_LEFT;
-                        document.Add(direccionDesc);
+                        document.Add(tableSuc);
 
-                        Paragraph numFact = new Paragraph("No Factura:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        numFact.Alignment = Element.ALIGN_LEFT;
-                        numFact.Add(item.Factura);
-                        document.Add(numFact);
+                        PdfPTable tableDir = new PdfPTable(2);
+                        tableDir.WidthPercentage = 100;
+                        tableDir.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableDir.DefaultCell.BorderWidth = 0;
 
-                        Paragraph vendedor = new Paragraph("Vendedor:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        vendedor.Alignment = Element.ALIGN_LEFT;
-                        document.Add(vendedor);
+                        tableDir.AddCell(new PdfPCell(new Phrase(new Phrase("Dirección:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableDir.AddCell(new Phrase(new Phrase(sucursalObj.Direccionsucursal,FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableDir.AddCell("");
+                        tableDir.AddCell("");
+                        float[] widthsDir = new float[] {32,68};
+                        tableDir.SetWidths(widthsDir);
 
-                        Paragraph vendedorName = new Paragraph($"{item.Codvendedor} {vendedorObj.NombresVendedor} {vendedorObj.ApellidosVendedor}",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL));
-                        vendedorName.Alignment = Element.ALIGN_CENTER;
-                        document.Add(vendedorName);
+                        document.Add(tableDir);
 
-                        Paragraph cliente = new Paragraph("Cliente:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        cliente.Alignment = Element.ALIGN_LEFT;
-                        document.Add(cliente);
+                        PdfPTable tableNumFact = new PdfPTable(2);
+                        tableNumFact.WidthPercentage = 100;
+                        tableNumFact.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableNumFact.DefaultCell.BorderWidth = 0;
 
-                        Paragraph clienteName = new Paragraph($"{item.CodCliente} {clienteObj.NombresCliente} {clienteObj.ApellidosCliente}",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL));
-                        clienteName.Alignment = Element.ALIGN_RIGHT;
-                        document.Add(clienteName);
+                        tableNumFact.AddCell(new PdfPCell(new Phrase(new Phrase("No Factura:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableNumFact.AddCell(new Phrase(new Phrase($"D {item.Factura}",FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableNumFact.AddCell("");
+                        tableNumFact.AddCell("");
+                        float[] widthNumFact = new float[] {40,60};
+                        tableNumFact.SetWidths(widthNumFact);
 
-                        Paragraph fechaFact = new Paragraph("Fecha Fact:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        fechaFact.Alignment = Element.ALIGN_LEFT;
-                        document.Add(fechaFact);
+                        document.Add(tableNumFact);
 
-                        // $"{item.FechaFactura.ToString("m",CultureInfo.GetCultureInfo("es-NI"))} de {item.FechaFactura.ToString("yyyy")}"
-                        Paragraph fecha = new Paragraph($"{item.FechaFactura.ToString("m",CultureInfo.GetCultureInfo("es-NI"))} de {item.FechaFactura.ToString("yyyy")}",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL));
-                        fecha.Alignment = Element.ALIGN_CENTER;
-                        document.Add(fecha);
+                        PdfPTable tableVend = new PdfPTable(2);
+                        tableVend.WidthPercentage = 100;
+                        tableVend.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableVend.DefaultCell.BorderWidth = 0;
 
-                        Paragraph venceEL = new Paragraph("Vence el:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
-                        venceEL.Alignment = Element.ALIGN_LEFT;
-                        document.Add(venceEL);
+                        tableVend.AddCell(new PdfPCell(new Phrase(new Phrase("Vendedor:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableVend.AddCell(new Phrase(new Phrase($"{vendedorObj.NombresVendedor} {vendedorObj.ApellidosVendedor}",FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableVend.AddCell("");
+                        tableVend.AddCell("");
+                        float[] widthVend = new float[] {35,65};
+                        tableVend.SetWidths(widthVend);
+
+                        document.Add(tableVend);
+
+                        PdfPTable tableClient = new PdfPTable(2);
+                        tableClient.WidthPercentage = 100;
+                        tableClient.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableClient.DefaultCell.BorderWidth = 0;
+
+                        tableClient.AddCell(new PdfPCell(new Phrase(new Phrase("Cliente:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableClient.AddCell(new Phrase(new Phrase($"{item.CodCliente} {clienteObj.NombresCliente} {clienteObj.ApellidosCliente}",FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableClient.AddCell("");
+                        tableClient.AddCell("");
+                        float[] widthClient = new float[] {30,70};
+                        tableClient.SetWidths(widthClient);
+
+                        document.Add(tableClient);
+
+                        PdfPTable tableFechaFact = new PdfPTable(2);
+                        tableFechaFact.WidthPercentage = 100;
+                        tableFechaFact.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableFechaFact.DefaultCell.BorderWidth = 0;
+
+                        tableFechaFact.AddCell(new PdfPCell(new Phrase(new Phrase("Fecha Fact:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableFechaFact.AddCell(new Phrase(new Phrase($"{item.FechaFactura.ToString("m",CultureInfo.GetCultureInfo("es-NI"))} de {item.FechaFactura.ToString("yyyy")}",FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableFechaFact.AddCell("");
+                        tableFechaFact.AddCell("");
+                        float[] widthFechaFact = new float[] {40,60};
+                        tableFechaFact.SetWidths(widthFechaFact);
+
+                        document.Add(tableFechaFact);
+
+                        PdfPTable tableVence = new PdfPTable(2);
+                        tableVence.WidthPercentage = 100;
+                        tableVence.DefaultCell.Border = Rectangle.TOP_BORDER;
+                        tableVence.DefaultCell.BorderWidth = 0;
+
+                        tableVence.AddCell(new PdfPCell(new Phrase(new Phrase("Vence el:",FontFactory.GetFont(FontFactory.HELVETICA,11,Font.BOLD)))){Border = 0});
+                        tableVence.AddCell(new Phrase(new Phrase("No Aplica",FontFactory.GetFont(FontFactory.HELVETICA,10,Font.NORMAL)))); 
+                        tableVence.AddCell("");
+                        tableVence.AddCell("");
+                        float[] widthVence = new float[] {30,70};
+                        tableVence.SetWidths(widthVence);
+
+                        document.Add(tableVence);
                     }
                     
 
@@ -192,22 +237,22 @@ namespace apiFactura.Controllers
                         fleteMonto = item.MontoFlete == 0? "0.00":item.MontoFlete.ToString("N",new CultureInfo("es-NI"));
                         string numero = _numeroLetraService.numeroLetra(item.TotalFactura);
 
-                        Paragraph subT = new Paragraph("SubTotal:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
+                        Paragraph subT = new Paragraph("SubTotal:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         subT.Alignment = Element.ALIGN_RIGHT;
                         subT.Add($"C${item.Subtotal.ToString("N",new CultureInfo("es-NI"))}");
                         document.Add(subT);
 
-                        Paragraph impuesto = new Paragraph("IVA:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
+                        Paragraph impuesto = new Paragraph("IVA:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         impuesto.Alignment = Element.ALIGN_RIGHT;
                         impuesto.Add($"C$ {iva}");
                         document.Add(impuesto);
 
-                        Paragraph flete = new Paragraph("FLETE:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
+                        Paragraph flete = new Paragraph("FLETE:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         flete.Alignment = Element.ALIGN_RIGHT;
                         flete.Add($"C$ {fleteMonto}");
                         document.Add(flete);
 
-                        Paragraph total = new Paragraph("TOTAL:  ", FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.BOLD));
+                        Paragraph total = new Paragraph("TOTAL:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         total.Alignment = Element.ALIGN_RIGHT;
                         total.Add($"C$ {item.TotalFactura.ToString("N", new CultureInfo("es-NI"))}");
                         document.Add(total);
@@ -227,6 +272,44 @@ namespace apiFactura.Controllers
 
                     Paragraph saltoDeLinea = new Paragraph("                                                                                                                                                                                                                                                                                                                                                                                   ");
                     document.Add(saltoDeLinea);
+
+                    
+                    if(param.impresa == 1) 
+                    {
+                        LineSeparator line4 = new LineSeparator(1,60, BaseColor.BLACK, Element.ALIGN_CENTER,0);
+                        document.Add(line4);
+
+                        Paragraph firma = new Paragraph("FIRMA", FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252, 7, Font.NORMAL));
+                        firma.Alignment = Element.ALIGN_CENTER;
+                        document.Add(firma);
+
+                        Paragraph espacio4 = new Paragraph(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
+                        espacio4.Alignment = Element.ALIGN_LEFT;
+                        document.Add(espacio4);
+
+                        Paragraph espacio5 = new Paragraph(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
+                        espacio5.Alignment = Element.ALIGN_LEFT;
+                        document.Add(espacio5);
+
+                        LineSeparator line5 = new LineSeparator(1,60, BaseColor.BLACK, Element.ALIGN_CENTER,0);
+                        document.Add(line5);
+
+                        Paragraph firmaAut = new Paragraph("FIRMA AUTORIZADO", FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252, 7, Font.NORMAL));
+                        firmaAut.Alignment = Element.ALIGN_CENTER;
+                        document.Add(firmaAut);
+
+                        Paragraph espacio2 = new Paragraph(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
+                        espacio2.Alignment = Element.ALIGN_LEFT;
+                        document.Add(espacio2);
+
+                        Paragraph reimp = new Paragraph("REIMPRESA", FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252, 9, Font.NORMAL));
+                        reimp.Alignment = Element.ALIGN_CENTER;
+                        document.Add(reimp);
+
+                        Paragraph espacio3 = new Paragraph(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
+                        espacio3.Alignment = Element.ALIGN_LEFT;
+                        document.Add(espacio3);
+                    }
 
                     Paragraph autorizado = new Paragraph("AUT-DGI:ASFC 04/0097/08/2015/7", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
                     autorizado.Alignment = Element.ALIGN_CENTER;
