@@ -26,6 +26,7 @@ namespace apiFactura.Models.Dto
             public string Direccion {get;set;} = null!;
             public string Telefono1 {get;set;} = null!;
             public string Moroso {get;set;} = null!;
+            public string? Cedula { get; set; } = null!;
         
         }
     }

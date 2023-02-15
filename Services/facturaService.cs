@@ -137,6 +137,7 @@ namespace apiFactura.Services
                 FechaFactura=s.Fechafactura,
                 CodCliente=s.Codcliente,
                 Cliente = s.Cliente,
+                Cedula = _context.CcfClientes.Where(w => w.CodCliente.ToUpper() == s.Codcliente.ToUpper()).Select(s => s.Cedula).FirstOrDefault(),
                 FechaVencimiento = s.Fechavencimiento,
                 Codvendedor=s.Codvendedor,
                 NombreVendedor=_context.GlobalVendedores.Where(w => w.Codvendedor.ToUpper()==s.Codvendedor.ToUpper()).Select(s => $"{s.NombresVendedor} {s.ApellidosVendedor}").FirstOrDefault(),
@@ -153,6 +154,7 @@ namespace apiFactura.Services
                 AllowEditName=_context.CcfClientes.FirstOrDefault(w => w.CodCliente.ToUpper()==s.Codcliente.ToUpper()).AllowEditName,
                 Expr1=$"{_numLetra.NumeroALetras(s.Totalfactura)} con {s.Totalfactura % 1}",
                 MontoLetrasDolar=$"{_numLetra.NumeroALetras((s.Totalfactura+s.MontoFlete)/s.Tipocambio)} con {((s.Totalfactura+s.MontoFlete)/s.Tipocambio) % 1}",
+                Serie= _context.GlobalSucursales.Where(w => w.Codsucursal.ToUpper()==s.Codsucursal.ToUpper()).Select(s => s.Serie).FirstOrDefault(),
                 detailFacturaImprimirs=_context.FafFacturadetalle
                 .Where(w => w.Factura == s.Factura && w.Codsucursal.ToUpper() == param.CodSucursal.ToUpper())
                 .Select(se => new detailFacturaImprimir
@@ -192,7 +194,8 @@ namespace apiFactura.Services
                 FechaFactura=s.FechaFactura,
                 CodCliente=s.CodCliente,
                 Cliente=s.Cliente,
-                FechaVencimiento=s.FechaVencimiento,
+                Cedula = _context.CcfClientes.Where(w => w.CodCliente.ToUpper() == s.CodCliente.ToUpper()).Select(s => s.Cedula).FirstOrDefault(),
+                FechaVencimiento =s.FechaVencimiento,
                 Codvendedor=s.Codvendedor,
                 NombreVendedor=_context.GlobalVendedores.Where(w => w.Codvendedor.ToUpper() == s.Codvendedor.ToUpper()).Select(s => $"{s.NombresVendedor} {s.ApellidosVendedor}").FirstOrDefault(),
                 Remision=s.Remision,
@@ -209,6 +212,7 @@ namespace apiFactura.Services
                 AllowEditName=_context.CcfClientes.FirstOrDefault(w => w.CodCliente.ToUpper()==s.CodCliente.ToUpper()).AllowEditName,
                 Expr1=$"{_numLetra.NumeroALetras(s.TotalFactura)} con {s.TotalFactura % 1}",
                 MontoLetrasDolar=$"{_numLetra.NumeroALetras((s.TotalFactura+s.MontoFlete)/s.TipoCambio)} con {((s.TotalFactura+s.MontoFlete)/s.TipoCambio) % 1}",
+                Serie= _context.GlobalSucursales.Where(w => w.Codsucursal.ToUpper()==s.Codsucursal.ToUpper()).Select(s => s.Serie).FirstOrDefault(),
                 detailFacturaImprimirs=_context.TmpImpresionFafFacturaDetalle
                 .Where(w => w.Factura == s.Factura && w.CodSucursal.ToUpper() == s.Codsucursal.ToUpper())
                 .Select(se => new detailFacturaImprimir

@@ -22,5 +22,6 @@ namespace apiFactura.Models
         public DateTime Fechaultimocorteccf {get;set;}
         public decimal Tcambioultimocorteccf {get;set;}
         public string Direccionsucursal {get;set;} = null!;
+        public string? Serie {get;set;} = null!;
     }
 }

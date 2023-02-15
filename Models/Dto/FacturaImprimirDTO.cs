@@ -63,6 +63,7 @@ namespace apiFactura.Models.Dto
         public DateTime FechaFactura {get;set;}
         public string? CodCliente {get;set;} = null!;
         public string? Cliente {get;set;} = null!;
+        public string? Cedula { get;set;} = null!;
         public DateTime FechaVencimiento {get;set;}
         public string? Codvendedor {get;set;} = null!;
         public string? NombreVendedor {get;set;} = null!;
@@ -81,6 +82,7 @@ namespace apiFactura.Models.Dto
         public string? MontoLetrasDolar {get;set;} = null!;
         public decimal TipoCambioParalelo {get;set;}
         public decimal MontoFlete {get;set;}
+        public string? Serie {get;set;} = null!;
         public List<detailFacturaImprimir>  detailFacturaImprimirs{get;set;}=new List<detailFacturaImprimir>();
         
 

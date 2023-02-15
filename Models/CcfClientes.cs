@@ -19,6 +19,7 @@ namespace apiFactura.Models
         public Int16 Moroso {get;set;} 
         public decimal Saldo {get;set;}
         public bool AllowEditName {get;set;}
+        public string? Cedula { get; set; } = null!;
         
     }
 }
