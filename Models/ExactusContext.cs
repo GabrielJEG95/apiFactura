@@ -84,6 +84,9 @@ public partial class ExactusContext : DbContext
     public virtual DbSet<Articulo> Articulo {get;set;}
     public virtual DbSet<Tipo_Cambio_Hist> Tipo_Cambio_Hist {get;set;}
     public virtual DbSet<globalUsuario> globalusuario{get;set;}
+
+    public virtual DbSet<ReiSolicitudReintegroDePago> ReiSolicitudReintegroDePagos {get;set;}
+    public virtual DbSet<ReiSolicitudReintegroDePagoDetalle> ReiSolicitudReintegroDePagoDetalles {get;set;}
     /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -200,6 +203,19 @@ public partial class ExactusContext : DbContext
             entity.HasKey(e => new {e.CodSucursal,e.Factura, e.CodCliente});
             entity.ToTable("tmpImpresionfafFACTURADetalle", "fnica");
         });
+
+        modelBuilder.Entity<ReiSolicitudReintegroDePago>(entity =>
+        {
+            entity.HasKey(e => e.IdSolicitud);
+            entity.ToTable("reiSolicitudReintegroDePago","fnica");
+        });
+
+        modelBuilder.Entity<ReiSolicitudReintegroDePagoDetalle>(entity => 
+        {
+            entity.HasKey(e => new {e.IdSolicitud,e.Linea,e.Centro_Costo});
+            entity.ToTable("reiSolicitudReintegroDePagoDetalle","fnica");
+        });
+
         modelBuilder.Entity<Articulo>(entity =>
         {
             entity.HasKey(e => e.ARTICULO).HasName("PK_ARTICULO");

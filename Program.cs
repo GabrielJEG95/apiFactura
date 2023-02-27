@@ -82,6 +82,7 @@ builder.Services.AddTransient<IccfClienteService,ccfClienteService>();
 builder.Services.AddTransient<IglobalVendedoreService,globalVendedoreService>();
 builder.Services.AddTransient<IArticuloService,ArticuloService>();
 builder.Services.AddTransient<InumeroLetraService,numeroLetraService>();
+builder.Services.AddTransient<IsolicitudReintegroDePagoService,solicitudReintegroDePagoService>();
 
 
 var app = builder.Build();

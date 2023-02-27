@@ -208,16 +208,18 @@ namespace apiFactura.Controllers
 
 
                     table.AddCell(new PdfPCell(new Phrase(new Phrase("Producto",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD)))){Border = 0});
-                    table.AddCell(new PdfPCell(new Phrase(new Phrase("Cantidad",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD)))){Border = 0});
+                    table.AddCell(new PdfPCell(new Phrase(new Phrase("Cant",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD)))){Border = 0});
                     table.AddCell(new PdfPCell(new Phrase(new Phrase("Precio",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD)))){Border = 0});
                     table.AddCell(new PdfPCell(new Phrase(new Phrase("IVA",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD)))){Border = 0});
                     table.AddCell(new PdfPCell(new Phrase(new Phrase("TOTAL",FontFactory.GetFont(FontFactory.HELVETICA,7,Font.BOLD)))){Border = 0});
+
                     
+                    
+                    /*table.AddCell("");
                     table.AddCell("");
                     table.AddCell("");
                     table.AddCell("");
-                    table.AddCell("");
-                    table.AddCell("");
+                    table.AddCell("");*/
 
                     LineSeparator  line2 = new LineSeparator(1,100, BaseColor.BLACK, Element.ALIGN_CENTER,0);
                     document.Add(line2);
@@ -225,19 +227,21 @@ namespace apiFactura.Controllers
                     string fleteMonto = "";
                     DateTime fechaImp = DateTime.Now;
 
-                    float[] widths = new float[] { 33, 25, 25 ,25, 25 };
+                    float[] widths = new float[] { 40, 15, 25 ,25, 25 };
                     table.SetWidths(widths);
                     
                     foreach (detailFacturaImprimir item in detalle)
                     {
                         var articuloObj = _articuloService.obtenerArticulo(item.Articulo);
 
-                        iva = item.Iva == 0? "0.00":item.Iva.ToString("#.##");
-                        table.AddCell(new PdfPCell(new Phrase($"{item.Articulo}-{articuloObj.Descripcion}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
+                        iva = item.ivaDolar == 0? "0.00":item.ivaDolar.ToString("#.##");
+                        table.AddCell(new PdfPCell(new Phrase($"{item.Articulo}-{articuloObj.Descripcion}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){ Border = 0,Colspan = 5});
+                        table.CompleteRow();
+                        table.AddCell(new PdfPCell(new Phrase("")){Border = 0});
                         table.AddCell(new PdfPCell(new Phrase($"{item.Cantidad.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
-                        table.AddCell(new PdfPCell(new Phrase($"C$ {item.PrecioUnitario.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
-                        table.AddCell(new PdfPCell(new Phrase($"C$ {iva}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
-                        table.AddCell(new PdfPCell(new Phrase($"C$ {item.Total.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
+                        table.AddCell(new PdfPCell(new Phrase($"$ {item.precioDolar.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
+                        table.AddCell(new PdfPCell(new Phrase($"$ {iva}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
+                        table.AddCell(new PdfPCell(new Phrase($"$ {item.TotalDolar.ToString("#.##")}",FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252,7,Font.NORMAL))){Border = 0});
                         
                     }
                    
@@ -248,36 +252,40 @@ namespace apiFactura.Controllers
 
                     foreach (var item in data)
                     {
-                        iva = item.Iva == 0? "0.00":item.Iva.ToString("#.00",new CultureInfo("es-NI"));
-                        fleteMonto = item.MontoFlete == 0? "0.00":item.MontoFlete.ToString("#.00",new CultureInfo("es-NI"));
+                        decimal fleteDol = item.MontoFlete/item.TipoCambio;
+                        decimal ivaDol = item.Iva/item.TipoCambio;
+                        iva = ivaDol == 0? "0.00":ivaDol.ToString("N2",new CultureInfo("es-NI"));
+                        fleteMonto = fleteDol == 0? "0.00":fleteDol.ToString("N2",new CultureInfo("es-NI"));
                         string numero = _numeroLetraService.numeroLetra(item.TotalFactura);
                         decimal centavos = item.TotalFactura % 1;
 
                         Paragraph subT = new Paragraph("SubTotal:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         subT.Alignment = Element.ALIGN_RIGHT;
-                        subT.Add($"C${item.Subtotal.ToString("#.00",new CultureInfo("es-NI"))}");
+                        decimal SubTotalDol = item.Subtotal/item.TipoCambio;
+                        subT.Add($"${SubTotalDol.ToString("N2",new CultureInfo("es-NI"))}");
                         document.Add(subT);
 
                         Paragraph impuesto = new Paragraph("IVA:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         impuesto.Alignment = Element.ALIGN_RIGHT;
-                        impuesto.Add($"C$ {iva}");
+                        impuesto.Add($"$ {iva}");
                         document.Add(impuesto);
 
                         Paragraph flete = new Paragraph("FLETE:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         flete.Alignment = Element.ALIGN_RIGHT;
-                        flete.Add($"C$ {fleteMonto}");
+                        flete.Add($"$ {fleteMonto}");
                         document.Add(flete);
 
                         Paragraph total = new Paragraph("TOTAL:  ", FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL));
                         total.Alignment = Element.ALIGN_RIGHT;
-                        total.Add($"C$ {item.TotalFactura.ToString("#.00", new CultureInfo("es-NI"))}");
+                        decimal totalFact = item.TotalFactura/item.TipoCambio;
+                        total.Add($"$ {totalFact.ToString("N2", new CultureInfo("es-NI"))}");
                         document.Add(total);
 
                         Paragraph espacio = new Paragraph(" ", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD));
                         espacio.Alignment = Element.ALIGN_LEFT;
                         document.Add(espacio);
 
-                        Paragraph totalLetras = new Paragraph($"{numero} con {centavos.ToString("#.00")}/100", FontFactory.GetFont(FontFactory.HELVETICA, 7, Font.BOLD));
+                        Paragraph totalLetras = new Paragraph($"{numero} con {centavos.ToString("N2")}/100", FontFactory.GetFont(FontFactory.HELVETICA, 7, Font.BOLD));
                         totalLetras.Alignment = Element.ALIGN_LEFT;
                         document.Add(totalLetras);
                     }

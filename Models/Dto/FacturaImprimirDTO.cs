@@ -104,5 +104,8 @@ namespace apiFactura.Models.Dto
         public string? Unidad_Almacen {get;set;} = null!;
         public decimal? Factor_Empaque {get;set;}
         public string? Lote {get;set;} = null!;
+        public decimal TotalDolar {get;set;}
+        public decimal ivaDolar {get;set;}
+        public decimal precioDolar {get;set;}
     }
 }
