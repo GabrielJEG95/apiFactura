@@ -17,8 +17,10 @@ namespace apiFactura.Models.Dto
             public string UnidadSolicitante {get;set;} = null!;
             public decimal valor {get;set;}
             public string Concepto {get;set;} = null!;
+            public string Beneficiario {get;set;} = null!;
             public DateTime FechaSolicitud {get;set;}
             public string Banco {get;set;} = null!;
+            public string Moneda {get;set;} = null!;
         }
 
         public class listSolicitudReintegroDetalle
@@ -30,6 +32,8 @@ namespace apiFactura.Models.Dto
             public string NumeroFactura {get;set;} = null!;
             public string NombreEstablecimiento_Persona {get;set;} = null!;
             public decimal Monto {get;set;}
+            public string Concepto {get;set;} = null!;
+            public DateTime FechaFactura {get;set;}
         }
     }
     

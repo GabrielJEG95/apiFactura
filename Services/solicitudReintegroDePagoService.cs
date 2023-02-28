@@ -32,6 +32,8 @@ namespace apiFactura.Services
                Concepto=s.Concepto,
                FechaSolicitud = s.FechaSolicitud,
                UnidadSolicitante = s.Centro_Costo,
+               Beneficiario = s.Beneficiario,
+               Moneda = s.EsDolar == 0 ? "Cordobas C$" : "Dolares $",
                Banco = _context.FafBancos.FirstOrDefault(w => w.Codbanco == s.Banco).Descripcion             
 
             }).ToList();
@@ -46,12 +48,14 @@ namespace apiFactura.Services
             .Select(s => new listSolicitudReintegroDetalle
             {
                 IdSolicitud = s.IdSolicitud,
-                Centro_Costo = s.Centro_Costo,
-                Cuenta_Contable = s.Cuenta_Contable,
+                Centro_Costo = $"{s.Centro_Costo} {_context.CentroCostos.FirstOrDefault(w => w.Centro_Costo == s.Centro_Costo).Descripcion}",
+                Cuenta_Contable = $"{s.Cuenta_Contable} {_context.CuentaContables.FirstOrDefault(w => w.Cuenta_Contable == s.Cuenta_Contable).Descripcion}",
                 Linea = s.Linea,
                 NumeroFactura = s.NumeroFactura,
                 NombreEstablecimiento_Persona = s.NombreEstablecimiento_Persona,
-                Monto = s.Monto
+                Monto = s.Monto,
+                Concepto = s.Concepto,
+                FechaFactura =s.FechaFactura
             }).ToList();
 
             return result;
