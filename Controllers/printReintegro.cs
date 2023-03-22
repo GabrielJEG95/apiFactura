@@ -65,7 +65,7 @@ namespace apiFactura.Controllers
                         tableIDSol.AddCell(new Phrase(new Phrase(IdSolicitud.ToString(),FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL)))); 
                         tableIDSol.AddCell(new PdfPCell(new Phrase(new Phrase("Fecha de Emision:",FontFactory.GetFont(FontFactory.HELVETICA,9,Font.BOLD)))){Border = 0});
                         tableIDSol.AddCell(new Phrase(new Phrase(item.FechaSolicitud.ToString(),FontFactory.GetFont(FontFactory.HELVETICA,9,Font.NORMAL)))); 
-                        float[] widthIDSol = new float[] {55,50, 30,50};
+                        float[] widthIDSol = new float[] {56,50, 30,50};
                         tableIDSol.SetWidths(widthIDSol);
 
                         document.Add(tableIDSol);

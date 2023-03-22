@@ -12,7 +12,7 @@ namespace apiFactura.Models
         public string Codsucursal {get;set;} = null!;
         public string Sucursal {get;set;} = null!;
         public string CodCliente {get;set;} = null!;
-
+        public string Tipo {get;set;} = null!;
         public string Cliente {get;set;} = null!;
         public decimal Subtotal {get;set;}
         public decimal TotalFactura {get;set;}

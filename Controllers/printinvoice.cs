@@ -66,13 +66,13 @@ namespace apiFactura.Controllers
                         document.Add(espacio3);*/
                     }
 
-                    Paragraph header = new Paragraph("FORMULADORA NICARAGUENSE", FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252, 9, Font.BOLD));
+                    Paragraph header = new Paragraph("FORMUNICA", FontFactory.GetFont(FontFactory.HELVETICA,BaseFont.CP1252, 9, Font.BOLD));
                     header.Alignment = Element.ALIGN_CENTER;
                     document.Add(header);
 
-                    Paragraph header2 = new Paragraph("HANON TALAVERA", FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.BOLD));
+                    /*Paragraph header2 = new Paragraph("HANON TALAVERA", FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.BOLD));
                     header2.Alignment = Element.ALIGN_CENTER;
-                    document.Add(header2);
+                    document.Add(header2);*/
 
                     
                     foreach (var item in data)

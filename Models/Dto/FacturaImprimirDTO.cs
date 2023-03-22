@@ -16,12 +16,14 @@ namespace apiFactura.Models.Dto
         }
         [Required(ErrorMessage = "Favor proporcionar el usuario")]
         public string? Usuario {get;set;}
-        [Required(ErrorMessage = "Favor establecer una fecha de iniciio")]
+        //[Required(ErrorMessage = "Favor establecer una fecha de iniciio")]
         public DateTime FechaInicial {get;set;}
-        [Required(ErrorMessage = "Favor establecer una fecha final")]
+        //[Required(ErrorMessage = "Favor establecer una fecha final")]
         public DateTime FechaFinal {get;set;}
         [Required(ErrorMessage = "Favor indicar si desea consultar factura impresa o pendiente de imprimir")]
         public int? PendienteImprimir {get;set;}
+
+        public string? Factura {get;set;}
 
         private string _ordenarPor {get;set;}
         public new string OrdenarPor

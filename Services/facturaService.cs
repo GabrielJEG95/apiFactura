@@ -24,6 +24,7 @@ namespace apiFactura.Services
         List<headerFacturaImprimir> ImprimirFactura(FafFActuraImpresorParam param);
         List<detailFacturaImprimir> ImprimirDetalleFactura(FafFActuraImpresorParam param);
         void establecerFacturaImpresa (FafFActuraImpresorParam param, UpdateFactura obj);
+        List<ListFactura> obtenerFactura(string Factura);
     }
 
     public class FacturaService:IFacturaService
@@ -39,7 +40,25 @@ namespace apiFactura.Services
             this._facturaRepository = new FacturaRepository(context);
             this._numLetra = new numeroALetras();
         }
-        
+
+        public List<ListFactura> obtenerFactura(string Factura)
+        {
+            var result  = _context.FafFactura.Where(w => w.Factura == Factura)
+                .Select(s => new ListFactura
+                {
+                    Factura = s.Factura,
+                    Cliente = s.Cliente,
+                    CodCliente = s.Codcliente,
+                    Codvendedor = s.Codvendedor,
+                    Subtotal = s.Subtotal,
+                    Descuento = s.Descuento,
+                    Anulada = s.Anulada == 1 ? "SI" : s.Anulada == 0 ? "NO" : null,
+                    Fechafactura = s.Fechafactura
+                }).ToList();
+
+            return result;
+        }
+
         public PaginaCollection<ListFactura> ListarFacturas (facturaDTO param)
         {
             var result = _context.FafFactura.Where(w => (param.Factura.IsNullOrDefault() || Convert.ToInt32(w.Factura) == param.Factura)
@@ -58,6 +77,7 @@ namespace apiFactura.Services
                     Subtotal=s.Subtotal,
                     Descuento=s.Descuento,
                     Anulada=s.Anulada==1?"SI":s.Anulada==0?"NO":null,
+                    Tipo = s.Tipo=="1"?"Contado":s.Tipo=="2"?"Credito":null,
                     Fechafactura=(DateTime)s.Fechafactura
                 }).Paginar(param.pagina,param.registroPorPagina);
 
@@ -84,6 +104,7 @@ namespace apiFactura.Services
                 Sucursal=_context.GlobalSucursales.FirstOrDefault(w => w.Codsucursal.ToUpper() == s.Codsucursal.ToUpper()).Sucursal,
                 CodCliente=s.CodCliente,
                 Subtotal=s.Subtotal,
+                Tipo = s.Tipo=="1"?"Contado":s.Tipo=="2"?"Credito":null,
                 TotalFactura=s.TotalFactura,
                 Cliente = _context.CcfClientes.Where(w => w.CodCliente.ToUpper() == s.CodCliente.ToUpper()).Select(s => $"{s.NombresCliente} {s.ApellidosCliente}").FirstOrDefault()
             }).Paginar(param.pagina,param.registroPorPagina);
@@ -97,12 +118,16 @@ namespace apiFactura.Services
 
             var result = _context.FafFactura.Where(w =>  data.Contains(w.Codsucursal) 
             && w.Impresa== 1
-            && w.Fechafactura >= param.FechaInicial && w.Fechafactura <=  param.FechaFinal)
+            && (param.FechaInicial != DateTime.MinValue || w.Fechafactura >= param.FechaInicial) 
+            && (param.FechaFinal != DateTime.MaxValue || w.Fechafactura <=  param.FechaFinal)
+            && (param.Factura.IsNullOrEmpty() || w.Factura == param.Factura)
+            )
             .Select(s => new FafGetFacturasImprimir
             {
                 Factura = s.Factura,
                 FechaFactura = s.Fechafactura,
                 Codsucursal=s.Codsucursal,
+                Tipo = s.Tipo=="1"?"Contado":s.Tipo=="2"?"Credito":null,
                 Sucursal= _context.GlobalSucursales.FirstOrDefault(w => w.Codsucursal.ToUpper() == s.Codsucursal.ToUpper()).Sucursal,
                 CodCliente=s.Codcliente,
                 Subtotal=s.Subtotal,

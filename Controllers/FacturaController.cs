@@ -77,6 +77,22 @@ namespace apiFactura.Controllers
             }
         }
 
+        [HttpGet("{Factura:int}")]
+        public IActionResult GetFacturaById(int Factura)
+        {
+            try
+            {
+                string NoFactura = Factura.ToString();
+                var data = _facturaService.obtenerFactura(NoFactura);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                var error = RespuestaModel.ProcesarExcepción(ex);
+                return StatusCode(error.statusCode, error);
+            }
+        }
+
         [HttpPut]
         public IActionResult PutFacturaImprimir([FromQuery]FafFActuraImpresorParam param,[FromBody] UpdateFactura obj)
         {

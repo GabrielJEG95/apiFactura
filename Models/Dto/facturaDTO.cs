@@ -47,6 +47,7 @@ namespace apiFactura.Models.Dto
             public decimal Subtotal {get;set;}
             public decimal Descuento {get;set;}
             public string? Anulada {get;set;}
+            public string? Tipo {get;set;} // si es credito o contado
             public DateTime Fechafactura {get;set;}
 
         }
