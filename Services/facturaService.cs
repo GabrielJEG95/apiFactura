@@ -118,8 +118,8 @@ namespace apiFactura.Services
 
             var result = _context.FafFactura.Where(w =>  data.Contains(w.Codsucursal) 
             && w.Impresa== 1
-            && (param.FechaInicial != DateTime.MinValue || w.Fechafactura >= param.FechaInicial) 
-            && (param.FechaFinal != DateTime.MaxValue || w.Fechafactura <=  param.FechaFinal)
+            && (w.Fechafactura >= param.FechaInicial) 
+            && (w.Fechafactura <=  param.FechaFinal)
             && (param.Factura.IsNullOrEmpty() || w.Factura == param.Factura)
             )
             .Select(s => new FafGetFacturasImprimir
